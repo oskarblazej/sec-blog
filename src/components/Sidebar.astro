@@ -1,0 +1,65 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  posts: CollectionEntry<"blog">[];
+}
+
+const { posts } = Astro.props;
+const pathname = Astro.url.pathname;
+const activeSlug = pathname.split("/").filter(Boolean).pop();
+const isHome = pathname === "/";
+const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
+---
+
+<aside class="hidden lg:block sticky top-8 h-[calc(100vh-4rem)] overflow-y-auto rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+  <!-- Navigation Section -->
+  <div class="mb-8 space-y-2">
+    <a
+      href="/"
+      class={`block rounded-2xl border px-4 py-3 text-center font-medium transition ${
+        isHome
+          ? "bg-slate-900 text-white border-slate-900 dark:bg-slate-200 dark:text-slate-950"
+          : "border-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+      }`}
+    >
+      Home
+    </a>
+    <a
+      href="/blog"
+      class={`block rounded-2xl border px-4 py-3 text-center font-medium transition ${
+        isBlog
+          ? "bg-slate-900 text-white border-slate-900 dark:bg-slate-200 dark:text-slate-950"
+          : "border-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+      }`}
+    >
+      Blog
+    </a>
+  </div>
+
+  <!-- News Section -->
+  <div class="mb-6">
+    <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">News</p>
+    <h2 class="mt-2 text-lg font-semibold text-slate-900 dark:text-slate-100">Latest posts</h2>
+  </div>
+
+  <ul class="space-y-2">
+    {posts.map((post) => {
+      const isActive = post.slug === activeSlug;
+      return (
+        <li>
+          <a
+            href={`/blog/${post.slug}/`}
+            class={`block rounded-2xl border px-4 py-3 text-sm transition ${
+              isActive
+                ? "bg-slate-900 text-white border-slate-900 dark:bg-slate-200 dark:text-slate-950"
+                : "border-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+            }`}
+          >
+            {post.data.title}
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</aside>

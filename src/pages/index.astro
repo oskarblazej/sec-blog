@@ -1,0 +1,103 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Sidebar from "../components/Sidebar.astro";
+import BottomControls from "../components/BottomControls.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const socialLinks = [
+  {
+    name: "TryHackMe",
+    url: "https://tryhackme.com/p/oskarblazej",
+    icon: "🎯",
+  },
+  {
+    name: "HackTheBox",
+    url: "https://profile.hackthebox.com/profile/019ca5b8-cadb-7283-872a-e8356e1482df",
+    icon: "📦",
+  },
+  {
+    name: "LinkedIn",
+    url: "https://www.linkedin.com/in/oskar-hampel-4a3ab2293/",
+    icon: "💼",
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <Header />
+    <main class="mx-auto max-w-[1400px] px-4 py-8">
+      <div class="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
+        <Sidebar posts={posts} />
+        
+        <div class="space-y-8">
+          <!-- Hero Section -->
+          <section class="space-y-6 rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div class="space-y-4">
+              <div>
+                <h1 class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
+                  Oskar Hampel
+                </h1>
+                <p class="mt-2 text-lg text-slate-600 dark:text-slate-300">
+                  Application Security & Offensive Security Enthusiast
+                </p>
+              </div>
+
+              <div class="space-y-3 text-slate-700 dark:text-slate-300">
+                <p>
+                  I'm a security professional with 2.5+ years of experience in application security, SAST analysis, and secure SDLC practices. My journey spans from defensive security measures to becoming increasingly passionate about offensive security and penetration testing.
+                </p>
+                <p>
+                  This blog documents my exploration into the world of pentesting, vulnerability research, and security tooling. Here you'll find writeups, insights, and lessons learned from practical security work and hands-on learning platforms.
+                </p>
+                <p>
+                  <strong>Current focus:</strong> Transitioning into technical security roles, exploring web application vulnerabilities, and building expertise in offensive security methodologies.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Social Links Section -->
+          <section class="space-y-4 rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <h2 class="text-xl font-semibold text-slate-900 dark:text-white">Connect</h2>
+            <div class="grid gap-3 grid-cols-1 sm:grid-cols-3">
+              {socialLinks.map((link) => (
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="group block rounded-2xl border border-slate-200 bg-white p-6 transition hover:border-slate-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-950 dark:hover:border-slate-700"
+                >
+                  <div class="flex items-start gap-3">
+                    <span class="text-2xl">{link.icon}</span>
+                    <div class="flex-1">
+                      <h3 class="font-medium text-slate-900 dark:text-white group-hover:text-slate-700 dark:group-hover:text-slate-200 transition">
+                        {link.name}
+                      </h3>
+                      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                        Visit my profile
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+    <Footer />
+    <BottomControls />
+  </body>
+</html>

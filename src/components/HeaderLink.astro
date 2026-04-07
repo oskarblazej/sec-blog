@@ -1,0 +1,25 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"a">;
+
+const { href, class: className, ...props } = Astro.props;
+
+const { pathname } = Astro.url;
+const subpath = pathname.match(/[^\/]+/g);
+const isActive = href === pathname || href === "/" + subpath?.[0];
+---
+
+<a
+  href={href}
+  class:list={[
+    className,
+    "px-4 p-2 rounded transition-colors border",
+    isActive
+      ? "text-sky-800 dark:text-sky-200 bg-sky-100 dark:bg-sky-900 hover:bg-sky-200 dark:hover:bg-sky-800 border-sky-100 dark:border-sky-900 hover:border-sky-200 dark:hover:border-sky-800"
+      : "text-slate-800 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700",
+  ]}
+  {...props}
+>
+  <slot />
+</a>

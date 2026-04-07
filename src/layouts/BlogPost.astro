@@ -1,0 +1,64 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Sidebar from "../components/Sidebar.astro";
+import BottomControls from "../components/BottomControls.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+
+type Props = CollectionEntry<"blog">["data"];
+
+const posts = await getCollection("blog");
+const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+
+  <body class="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <Header />
+    <main class="mx-auto max-w-[1400px] px-4 py-8">
+      <div class="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
+        <Sidebar posts={posts} />
+
+        <article class="space-y-8 rounded-3xl border border-slate-200 bg-slate-50 p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div>
+            {
+              heroImage && (
+                <img width={1020} height={510} src={heroImage} alt="" class="rounded-3xl object-cover" />
+              )
+            }
+          </div>
+          <div class="prose dark:prose-invert max-w-none mx-auto px-0">
+            <div>
+              <div>
+                <span class="text-muted-fg block pb-2 text-slate-500 dark:text-slate-400">
+                  <FormattedDate date={pubDate} />
+                </span>
+                {
+                  updatedDate && (
+                    <div class="text-slate-600 dark:text-slate-300">
+                      Last updated on <FormattedDate date={updatedDate} />
+                    </div>
+                  )
+                }
+              </div>
+              <h1 class="mt-2 text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{title}</h1>
+              <p class="mt-4 text-slate-600 dark:text-slate-300">{description}</p>
+            </div>
+
+            <slot />
+          </div>
+
+
+        </article>
+      </div>
+    </main>
+    <Footer />
+    <BottomControls />
+  </body>
+</html>
