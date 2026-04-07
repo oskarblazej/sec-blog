@@ -2,6 +2,12 @@
 
 A modern, performance-focused security blog built with Astro. Technical deep-dives into application security and offensive security research.
 
+## Credits
+
+This project is based on [klapacz/blog](https://github.com/klapacz/blog) — an Astro blog template by [Klapacz](https://klapacz.dev).
+
+Modified and customized for security-focused content under the MIT License.
+
 ## 🛠 Tech Stack
 
 - **Framework:** Astro 5 — Static site generation with zero JavaScript by default
