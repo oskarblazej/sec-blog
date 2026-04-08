@@ -1,0 +1,100 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  posts: CollectionEntry<"blog">[];
+}
+
+const { posts } = Astro.props;
+const pathname = Astro.url.pathname;
+const activeSlug = pathname.split("/").filter(Boolean).pop();
+const isHome = pathname === "/";
+const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
+---
+
+<div class="lg:hidden">
+  <input type="checkbox" id="mobile-menu-toggle" class="hidden peer" />
+  <label for="mobile-menu-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-700 dark:text-slate-300">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </label>
+
+  <div class="fixed inset-0 z-50 lg:hidden peer-checked:flex">
+    <!-- Overlay -->
+    <div class="fixed inset-0 bg-black/50" onclick="document.getElementById('mobile-menu-toggle').checked = false;"></div>
+
+    <!-- Menu Panel -->
+    <div class="relative w-80 bg-white dark:bg-slate-950 shadow-lg transform transition-transform duration-300 ease-in-out">
+      <div class="flex flex-col h-full">
+        <!-- Close button -->
+        <div class="flex justify-end p-4">
+          <label for="mobile-menu-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-700 dark:text-slate-300">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </label>
+        </div>
+
+        <!-- Navigation Section -->
+        <div class="mb-8 space-y-2 px-4">
+          <a
+            href="/"
+            class={`block rounded-2xl border px-4 py-3 text-center font-medium transition ${
+              isHome
+                ? "bg-slate-900 text-white border-slate-900 dark:bg-slate-200 dark:text-slate-950"
+                : "border-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+            }`}
+            onclick="document.getElementById('mobile-menu-toggle').checked = false;"
+          >
+            Home
+          </a>
+          <a
+            href="/blog"
+            class={`block rounded-2xl border px-4 py-3 text-center font-medium transition ${
+              isBlog
+                ? "bg-slate-900 text-white border-slate-900 dark:bg-slate-200 dark:text-slate-950"
+                : "border-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+            }`}
+            onclick="document.getElementById('mobile-menu-toggle').checked = false;"
+          >
+            Blog
+          </a>
+        </div>
+
+        <!-- News Section -->
+        <div class="mb-6 px-4">
+          <p class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">News</p>
+          <h2 class="mt-2 text-lg font-semibold text-slate-900 dark:text-slate-100">Latest posts</h2>
+        </div>
+
+        <ul class="space-y-2 flex-1 overflow-y-auto px-4 pb-4">
+          {posts.map((post) => {
+            const isActive = post.slug === activeSlug;
+            return (
+              <li>
+                <a
+                  href={`/blog/${post.slug}/`}
+                  class={`block rounded-2xl border px-4 py-3 transition ${
+                    isActive
+                      ? "bg-slate-900 text-white border-slate-900 dark:bg-slate-200 dark:text-slate-950"
+                      : "border-transparent text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                  }`}
+                  onclick="document.getElementById('mobile-menu-toggle').checked = false;"
+                >
+                  <div class="text-sm font-medium">{post.data.title}</div>
+                  <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    {post.data.pubDate.toLocaleDateString()}
+                  </div>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
