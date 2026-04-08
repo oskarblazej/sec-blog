@@ -32,7 +32,7 @@ const plugin = () => (tree) => {
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://oskarblazej.sec",
+  site: "https://oskarblazej.tech",
   integrations: [mdx(), sitemap(), react()],
   vite: {
     plugins: [tailwindcss()],

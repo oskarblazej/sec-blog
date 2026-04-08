@@ -1,4 +1,4 @@
-# oskarblazej.sec
+# oskarblazej.tech
 
 A modern, performance-focused security blog built with Astro. Technical deep-dives into application security and offensive security research.
 
