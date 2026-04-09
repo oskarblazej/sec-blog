@@ -9,6 +9,7 @@ import theme from "shiki/themes/github-light-default.mjs";
 import { visit } from "unist-util-visit";
 
 import react from "@astrojs/react";
+import vercel from "@astrojs/vercel";
 
 /** @type {import('rehype-pretty-code').Options} */
 const rehypePrettyCodeOptions = {
@@ -33,6 +34,10 @@ const plugin = () => (tree) => {
 // https://astro.build/config
 export default defineConfig({
   site: "https://oskarblazej.tech",
+  output: "static",
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
   integrations: [mdx(), sitemap(), react()],
   vite: {
     plugins: [tailwindcss()],
