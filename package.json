@@ -21,6 +21,7 @@
     "@tanstack/react-router": "^1.133.27",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "@vercel/analytics": "^2.0.1",
     "astro": "^5.14.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
